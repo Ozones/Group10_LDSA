@@ -32,6 +32,11 @@ readlink -f /usr/bin/java
 #install pip
 sudo apt-get install python3-pip
 
+#Install Eye of Gnome, so we can view image files (plots)
+#Have to log in using $ssh -i [KEY] user@ip -X
+#The key being the "-X". This uses your own display as output-display
+sudo apt-get install eog
+
 # Fixing locale not set error
 # LC_ALL = (unset)
 # perl: warning: Setting locale failed.
@@ -57,6 +62,9 @@ rm spark-2.3.0-bin-hadoop2.7.tgz
 
 # Install jupyter
 sudo python3 -m pip install jupyter
+
+# Install matplotlib
+sudo python3 -m pip install matplotlib
 
 # Add these lines to the end of ~/.bashrc
 #Spark
@@ -129,6 +137,7 @@ ifconfig
 localhost:8080
 # Connect slaves to the master
 ./sbin/start-slave.sh spark://127.0.0.1:7077 
+<<<<<<< HEAD
 
 # From: 
 # https://www.tutorialkart.com/apache-spark/how-to-setup-an-apache-spark-cluster/
@@ -142,3 +151,5 @@ spark-env.sh
 SPARK_MASTER_HOST='192.168.1.54'
 # - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
 
+=======
+>>>>>>> df9648834c7401343e86b558c0003d730a8171eb

@@ -1,4 +1,9 @@
 #!/usr/bin/python
+
+#Have to be before pyplot import
+import matplotlib
+matplotlib.use('Agg') #Makes it so that plotting doesn't use Xwindows (not possible in VM)
+
 import matplotlib.pyplot as plt
 
 Lines = []
@@ -45,4 +50,4 @@ for i in range(0, len(AA_dic)):
     plt.plot(result)
     plt.legend()
 
-plt.show()
+plt.savefig('Plot.png') #Save plot as figure instead of showing it
