@@ -1,13 +1,7 @@
 #!/usr/bin/python
 
-#Have to be before pyplot import
-import matplotlib
-matplotlib.use('Agg') #Makes it so that plotting doesn't use Xwindows (not possible in VM)
-
-import matplotlib.pyplot as plt
-
 Lines = []
-with open('Small_txt.txt', 'r') as f:
+with open('example.txt', 'r') as f:
     count = 0
     for line in f:
         count+=1
@@ -36,18 +30,3 @@ for sequence in Lines:
         if letter in ('A', 'I', 'L', 'M', 'F', 'V', 'P', 'G'):
             Total[count]["Hydrophobic"] += 1
             count += 1
-
-
-##for sequence in Lines:
-##    count = 0
-##    for letter in sequence:
-##        if letter in AA_dic:
-##            Total[count][letter] += 1
-##            count += 1
-
-for i in range(0, len(AA_dic)):
-    result = [item[AA_dic[i]] for item in Total]
-    plt.plot(result)
-    plt.legend()
-
-plt.savefig('Plot.png') #Save plot as figure instead of showing it
