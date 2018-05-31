@@ -59,6 +59,9 @@ rm spark-2.3.0-bin-hadoop2.7.tgz
 # Install jupyter
 sudo python3 -m pip install jupyter
 
+# Install matplotlib
+sudo python3 -m pip install matplotlib
+
 # Add these lines to the end of ~/.bashrc
 #Spark
 export SPARK_HOME="/home/<your_username>/spark-2.3.0-bin-hadoop2.7/"
