@@ -1,11 +1,5 @@
 #!/usr/bin/python
 
-#Have to be before pyplot import
-import matplotlib
-matplotlib.use('Agg') #Makes it so that plotting doesn't use Xwindows (not possible in VM)
-
-import matplotlib.pyplot as plt
-
 Lines = []
 with open('Small_txt.txt', 'r') as f:
     count = 0
@@ -14,9 +8,9 @@ with open('Small_txt.txt', 'r') as f:
         if count % 2 == 0: #this is the remainder operator
            Lines.append(line)
 
-AA_dic = ["Charged", "Polar", "Hydrophobic"]           
-##AA_dic = ["A", "R", "N", "D", "C", "E", "Q", "G", "H", "I", "L", "K", 
-##"M", "F", "P", "S", "T", "W", "Y", "V"]
+##AA_dic = ["Charged", "Polar", "Hydrophobic"] #Simplified dictionary           
+AA_dic = ["A", "R", "N", "D", "C", "E", "Q", "G", "H", "I", "L", "K", 
+"M", "F", "P", "S", "T", "W", "Y", "V"] #Complete (Messier) dictionary
 Hash = {key: 0 for key in AA_dic}
 max_len = max(Lines, key=len)
 Total = []
@@ -24,9 +18,23 @@ Total = []
 for i in range(0, len(max_len)):
     Total.append(Hash.copy())
 
-for sequence in Lines:
-    count = 0
-    for letter in sequence:
+if len(AA_dic) > 3:
+    #Following section is only used with complete dictionary
+    ######################################################
+    for sequence in Lines:
+        count = 0
+
+        for letter in sequence:
+            if letter in AA_dic:
+                Total[count][letter] += 1      
+                count += 1
+    #######################################################
+else:
+    #Following section is only used with the simplified dictionary
+    ######################################################
+    for sequence in Lines:
+        count = 0
+
         if letter in ('R', 'K', 'D', 'E'):
             Total[count]["Charged"] += 1
             count += 1
@@ -36,18 +44,3 @@ for sequence in Lines:
         if letter in ('A', 'I', 'L', 'M', 'F', 'V', 'P', 'G'):
             Total[count]["Hydrophobic"] += 1
             count += 1
-
-
-##for sequence in Lines:
-##    count = 0
-##    for letter in sequence:
-##        if letter in AA_dic:
-##            Total[count][letter] += 1
-##            count += 1
-
-for i in range(0, len(AA_dic)):
-    result = [item[AA_dic[i]] for item in Total]
-    plt.plot(result)
-    plt.legend()
-
-plt.savefig('Plot.png') #Save plot as figure instead of showing it
