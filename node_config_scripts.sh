@@ -11,7 +11,7 @@ Host 130.238.28.124 #The floating IP address or the host name of the machine.
 # SSH:ing to the machine
 ssh -L 8888:localhost:8888 -L 8080:localhost:8080 -L 4040:localhost:4040 ubuntu@130.238.28.124 
 
-#////////////Inside the machine///////////////#
+#////////////Inside each node///////////////#
 
 # Check what is the hostname and set it
 hostname
@@ -73,6 +73,60 @@ export PYSPARK_PYTHON=python3">>~/.profile
 
 #update the .profile
 source ~/.profile
+
+# Making each node aware of each other 
+sudo nano /etc/hosts
+
+Change the hostname to the correct one
+
+# Add these lines to the end
+192.168.1.54 group101
+192.168.1.166 group102
+192.168.1.162 group103
+192.168.1.163 group104
+192.168.1.167 group105
+192.168.1.174 group106
+
+# Disable firewall
+sudo ufw disable
+
+# In each node
+cd ~/.ssh/
+
+# Download the private key to each node
+wget https://filedn.com/lMeFQXHqV237y22exG4jHzQ/group10keypair.pem
+
+# Change the permissions 
+sudo chmod 600 ~/.ssh/group10keypair.pem 
+
+# Test to connect to master node (group101)
+ssh -i group10keypair.pem ubuntu@130.238.28.124
+
+#////////////Setting up the cluster///////////////#
+Create a snapshot of instance configured as above
+Create 5 more instances from the snapshot
+
+
+
+
+#////////////Inside master///////////////#
+# From: 
+# https://www.tutorialkart.com/apache-spark/how-to-setup-an-apache-spark-cluster/
+# Copy SPARK_HOME/conf/spark-env.sh.template with name SPARK_HOME/conf/spark-env.sh 
+cp spark-env.sh.template spark-env.sh
+nano spark-env.sh
+# Add the master internal IP address
+spark-env.sh
+# Options for the daemons used in the standalone deploy mode
+# - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
+SPARK_MASTER_HOST='192.168.1.54'
+# - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
+
+
+
+
+
+#////////////Not used///////////////#
 
 # Find the master IP 
 ifconfig
