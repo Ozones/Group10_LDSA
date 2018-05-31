@@ -137,7 +137,6 @@ ifconfig
 localhost:8080
 # Connect slaves to the master
 ./sbin/start-slave.sh spark://127.0.0.1:7077 
-<<<<<<< HEAD
 
 # From: 
 # https://www.tutorialkart.com/apache-spark/how-to-setup-an-apache-spark-cluster/
@@ -151,5 +150,4 @@ spark-env.sh
 SPARK_MASTER_HOST='192.168.1.54'
 # - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
 
-=======
->>>>>>> df9648834c7401343e86b558c0003d730a8171eb
+
