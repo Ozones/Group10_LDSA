@@ -34,6 +34,8 @@ readlink -f /usr/bin/java
 sudo apt-get install python3-pip
 
 #Install Eye of Gnome, so we can view image files (plots)
+#Have to log in using $ssh -i [KEY] user@ip -X
+#The key being the "-X". This uses your own display as output-display
 sudo apt-get install eog
 
 # Fixing locale not set error
