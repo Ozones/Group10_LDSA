@@ -33,6 +33,9 @@ readlink -f /usr/bin/java
 #install pip
 sudo apt-get install python3-pip
 
+#Install Eye of Gnome, so we can view image files (plots)
+sudo apt-get install eog
+
 # Fixing locale not set error
 # LC_ALL = (unset)
 # perl: warning: Setting locale failed.
