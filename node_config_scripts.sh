@@ -1,3 +1,4 @@
+#////////////Inside each node///////////////#
 # Change the permissions of the private key to 0600
 sudo chmod 600 ~/.ssh/group10keypair.pem 
 
@@ -10,8 +11,6 @@ Host 130.238.28.124 #The floating IP address or the host name of the machine.
 
 # SSH:ing to the machine
 ssh -L 8888:localhost:8888 -L 8080:localhost:8080 -L 4040:localhost:4040 ubuntu@130.238.28.124 
-
-#////////////Inside each node///////////////#
 
 # Check what is the hostname and set it
 hostname
@@ -76,8 +75,7 @@ source ~/.profile
 
 # Making each node aware of each other 
 sudo nano /etc/hosts
-
-Change the hostname to the correct one
+#Change the hostname to the correct one
 
 # Add these lines to the end
 192.168.1.54 group101
@@ -86,6 +84,8 @@ Change the hostname to the correct one
 192.168.1.163 group104
 192.168.1.167 group105
 192.168.1.174 group106
+
+
 
 # Disable firewall
 sudo ufw disable
@@ -103,27 +103,16 @@ sudo chmod 600 ~/.ssh/group10keypair.pem
 ssh -i group10keypair.pem ubuntu@130.238.28.124
 
 #////////////Setting up the cluster///////////////#
-Create a snapshot of instance configured as above
-Create 5 more instances from the snapshot
+Created a snapshot of instance configured as above
+Created 5 more instances from the snapshot
 
 
+#////////////Inside the master///////////////#
+# Start the master
+./spark-2.3.0-bin-hadoop2.7/sbin/start-master.sh -h 192.168.1.54
 
-
-#////////////Inside master///////////////#
-# From: 
-# https://www.tutorialkart.com/apache-spark/how-to-setup-an-apache-spark-cluster/
-# Copy SPARK_HOME/conf/spark-env.sh.template with name SPARK_HOME/conf/spark-env.sh 
-cp spark-env.sh.template spark-env.sh
-nano spark-env.sh
-# Add the master internal IP address
-spark-env.sh
-# Options for the daemons used in the standalone deploy mode
-# - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
-SPARK_MASTER_HOST='192.168.1.54'
-# - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
-
-
-
+#////////////Inside the slaves///////////////#
+./spark-2.3.0-bin-hadoop2.7/sbin/start-slave.sh spark://192.168.1.54:7077
 
 
 #////////////Not used///////////////#
@@ -140,3 +129,16 @@ ifconfig
 localhost:8080
 # Connect slaves to the master
 ./sbin/start-slave.sh spark://127.0.0.1:7077 
+
+# From: 
+# https://www.tutorialkart.com/apache-spark/how-to-setup-an-apache-spark-cluster/
+# Copy SPARK_HOME/conf/spark-env.sh.template with name SPARK_HOME/conf/spark-env.sh 
+cp spark-env.sh.template spark-env.sh
+nano spark-env.sh
+# Add the master internal IP address
+spark-env.sh
+# Options for the daemons used in the standalone deploy mode
+# - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
+SPARK_MASTER_HOST='192.168.1.54'
+# - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
+
