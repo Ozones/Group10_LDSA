@@ -1,4 +1,4 @@
-#////////////Inside each node///////////////#
+#////////////In your home machine///////////////#
 # Change the permissions of the private key to 0600
 sudo chmod 600 ~/.ssh/group10keypair.pem 
 
@@ -9,9 +9,10 @@ nano ~/.ssh/config
 Host 130.238.28.124 #The floating IP address or the host name of the machine.
     IdentityFile ~/.ssh/group10keypair.pem
 
-# SSH:ing to the machine
-ssh -L 8888:localhost:8888 -L 8080:localhost:8080 -L 4040:localhost:4040 ubuntu@130.238.28.124 
+# SSH:ing to group101 node
+ssh -L 8888:localhost:8888 -L 8080:localhost:8080 -L 4040:localhost:4040 ubuntu@130.238.28.124 -X
 
+#////////////Inside each node///////////////#
 # Check what is the hostname and set it
 hostname
 sudo nano /etc/hosts
@@ -86,7 +87,7 @@ sudo nano /etc/hosts
 #Change the hostname to the correct one
 
 # Add these lines to the end
-192.168.1.54 group101
+192.168.1.191 group101
 192.168.1.166 group102
 192.168.1.162 group103
 192.168.1.163 group104
@@ -94,14 +95,14 @@ sudo nano /etc/hosts
 192.168.1.174 group106
 
 
-
 # Disable firewall
-sudo ufw disable
+sudo ufw disable # Not implemented in group101 yet
 
 # In each node
 cd ~/.ssh/
 
 # Download the private key to each node
+# Note the link might not work anymore
 wget https://filedn.com/lMeFQXHqV237y22exG4jHzQ/group10keypair.pem
 
 # Change the permissions 
@@ -115,6 +116,7 @@ Created a snapshot of instance configured as above
 Created 5 more instances from the snapshot
 
 
+#////////////Starting the cluster///////////////#
 #////////////Inside the master///////////////#
 # Start the master
 ./spark-2.3.0-bin-hadoop2.7/sbin/start-master.sh -h 192.168.1.54
@@ -150,4 +152,4 @@ spark-env.sh
 SPARK_MASTER_HOST='192.168.1.54'
 # - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
 
-
+ssh -i ~/.ssh/group10keypair.pem ubuntu@192.168.1.166
