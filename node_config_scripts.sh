@@ -74,9 +74,9 @@ export SPARK_HOME="/home/<your_username>/spark-2.3.0-bin-hadoop2.7/"
 # Adding environment variables
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
 export SPARK_HOME=/home/ubuntu/spark-2.3.0-bin-hadoop2.7
-export PATH=$PATH:/home/ubuntu/spark-2.3.0-bin-hadoop2.7/bin
+export PATH=$PATH:/home/ubuntu/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin:/home/ubuntu/spark-2.3.0-bin-hadoop2.7/bin
+export PYTHONPATH=/python:/python/lib/py4j-0.10.6-src.zip
 export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.6-src.zip:$PYTHONPATH
-export PATH=$SPARK_HOME/python:$PATH
 export PYSPARK_PYTHON=python3">>~/.profile
 
 #update the .profile
@@ -96,7 +96,7 @@ sudo nano /etc/hosts
 
 
 # Disable firewall
-sudo ufw disable # Not implemented in group101 yet
+sudo ufw disable # Not implemented in node: "group101" yet
 
 # In each node
 cd ~/.ssh/
@@ -119,11 +119,19 @@ Created 5 more instances from the snapshot
 #////////////Starting the cluster///////////////#
 #////////////Inside the master///////////////#
 # Start the master
-./spark-2.3.0-bin-hadoop2.7/sbin/start-master.sh -h 192.168.1.54
+./spark-2.3.0-bin-hadoop2.7/sbin/start-master.sh -h 192.168.1.191
+# Stop the master
+./spark-2.3.0-bin-hadoop2.7/sbin/stop-master.sh
+
+#////////////////////////////////////////////#
+# SSH into each worker
+ssh -i ~/.ssh/group10keypair.pem ubuntu@192.168.1.166
 
 #////////////Inside the slaves///////////////#
-./spark-2.3.0-bin-hadoop2.7/sbin/start-slave.sh spark://192.168.1.54:7077
-
+# Run this command to start the slave
+./spark-2.3.0-bin-hadoop2.7/sbin/start-slave.sh spark://192.168.1.191:7077
+# In order to stop the slave run this command
+./spark-2.3.0-bin-hadoop2.7/sbin/stop-slave.sh
 
 #////////////Not used///////////////#
 
@@ -151,5 +159,3 @@ spark-env.sh
 # - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
 SPARK_MASTER_HOST='192.168.1.54'
 # - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
-
-ssh -i ~/.ssh/group10keypair.pem ubuntu@192.168.1.166
