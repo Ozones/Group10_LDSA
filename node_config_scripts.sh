@@ -98,7 +98,7 @@ sudo nano /etc/hosts
 
 
 # Disable firewall
-sudo ufw disable # Not implemented in node: "group101" yet
+sudo ufw disable # Not implemented in node: "group101" though
 
 # In each node
 cd ~/.ssh/
@@ -111,7 +111,7 @@ wget https://filedn.com/lMeFQXHqV237y22exG4jHzQ/group10keypair.pem
 sudo chmod 600 ~/.ssh/group10keypair.pem
 
 # Test to connect to master node (group101)
-ssh -i group10keypair.pem ubuntu@130.238.28.124
+ssh -i ~/.ssh/group10keypair.pem ubuntu@130.238.28.124
 
 # Make a source directory where the data is placed
 mkdir data
@@ -135,7 +135,7 @@ Created 5 more instances from the snapshot
 ./spark-2.3.0-bin-hadoop2.7/sbin/stop-master.sh
 
 #////////////////////////////////////////////#
-# SSH into each worker
+# SSH:ing into each worker
 ssh -i ~/.ssh/group10keypair.pem ubuntu@192.168.1.166
 
 #////////////Inside the slaves///////////////#
@@ -143,72 +143,3 @@ ssh -i ~/.ssh/group10keypair.pem ubuntu@192.168.1.166
 ./spark-2.3.0-bin-hadoop2.7/sbin/start-slave.sh spark://192.168.1.191:7077
 # In order to stop the slave run this command
 ./spark-2.3.0-bin-hadoop2.7/sbin/stop-slave.sh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#////////////Not used///////////////#
-
-# Find the master IP 
-ifconfig
-# In the output, it's the ip address after inet in the second text block
-
-./sbin/start-master.sh -h 127.0.0.1
-
-# When now opening the browser with localhost:8080
-# One can see the master URL, in this case it is:
-# spark://127.0.0.1:7077 
-localhost:8080
-# Connect slaves to the master
-./sbin/start-slave.sh spark://127.0.0.1:7077 
-
-# From: 
-# https://www.tutorialkart.com/apache-spark/how-to-setup-an-apache-spark-cluster/
-# Copy SPARK_HOME/conf/spark-env.sh.template with name SPARK_HOME/conf/spark-env.sh 
-cp spark-env.sh.template spark-env.sh
-nano spark-env.sh
-# Add the master internal IP address
-spark-env.sh
-# Options for the daemons used in the standalone deploy mode
-# - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
-SPARK_MASTER_HOST='192.168.1.54'
-# - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
-
-
-export SPARK_HOME=/home/ubuntu/spark-2.3.0-bin-hadoop2.7
-export PATH=$PATH:/home/ubuntu/.local/bin:/home/ubuntu/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/ubuntu/spark-2.3.0-bin-hadoop2.7/bin
-export PYTHONPATH=/python:/python/lib/py4j-0.10.6-src.zip
-export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.6-src.zip:$PYTHONPATH
-export PYSPARK_PYTHON=python3
-
-
-
-#////////////Install hadoop in each node///////////////#
-# Install Hadoop in order to load the data into hdfs
-wget http://apache.mirrors.spacedump.net/hadoop/common/hadoop-2.7.6/hadoop-2.7.6.tar.gz
-tar -zxf hadoop-2.7.6.tar.gz 
-rm hadoop-2.7.6.tar.gz 
-
-# In hadoop-env.sh change JAVA_HOME
-sudo nano /home/ubuntu/hadoop-2.7.6/etc/hadoop/hadoop-env.sh
-# Comment out export JAVA_HOME=${JAVA_HOME}
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
-
-# Add in the end of .bashrc
-sudo nano ~/.bashrc
-export HADOOP_HOME="/home/ubuntu/hadoop-2.7.6"
-export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:$LD_LIBRARY_PATH
-
-# Update .bashrc
-source .bashrc
