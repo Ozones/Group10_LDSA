@@ -6,7 +6,7 @@ import pyspark
 
 sc = pyspark.SparkContext(appName="Read")
 
-file = sc.textFile('/home/ozones/LDSA/example.txt')
+file = sc.textFile('/home/ozones/LDSA/Seqs/')
 llist = file.collect()
 
 # print the list
